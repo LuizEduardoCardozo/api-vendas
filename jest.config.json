@@ -1,0 +1,8 @@
+{
+  "coverageDirectory": "coverage",
+  "coverageProvider": "v8",
+  "roots": ["<rootDir>"],
+  "testEnvironment": "node",
+  "testMatch": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)"],
+  "testPathIgnorePatterns": ["/node_modules/"]
+}
