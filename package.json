@@ -9,7 +9,8 @@
     "build": "yarn tsc",
     "start:prd": "yarn build && node build/server.js",
     "start:dev": "tsnd --inspect --transpile-only --ignore-watch node_modules src/server.ts",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "test": "jest"
   },
   "dependencies": {
     "ts-node-dev": "^1.1.6",
