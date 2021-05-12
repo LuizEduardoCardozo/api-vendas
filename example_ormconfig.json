@@ -1,0 +1,14 @@
+{
+    "type": "postgres",
+    "host": "<host_uri>",
+    "port": 5432,
+    "username": "<username>",
+    "password": "<password>",
+    "database": "<database>",
+    "migrations": [
+        "src/shared/typeorm/migrations/*.ts"
+    ],
+    "cli": {
+        "migrationsDir": "src/shared/typeorm/migrations"
+    }
+}
