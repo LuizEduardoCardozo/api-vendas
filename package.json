@@ -10,7 +10,8 @@
     "start:prd": "yarn build && node build/server.js",
     "start:dev": "tsnd --inspect --transpile-only --ignore-watch node_modules src/shared/index.ts",
     "lint": "eslint . --ext .ts",
-    "test": "jest"
+    "test": "jest",
+    "typeorm": "ts-node node_modules/typeorm/cli"
   },
   "dependencies": {
     "cors": "^2.8.5",
