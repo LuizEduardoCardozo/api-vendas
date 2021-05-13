@@ -1,10 +1,4 @@
-import {
-  EntityColumnNotFound,
-  EntityRepository,
-  FindManyOptions,
-  getRepository,
-  Repository,
-} from 'typeorm';
+import { EntityRepository, getRepository, Repository } from 'typeorm';
 
 import Product from '../entities/product';
 
