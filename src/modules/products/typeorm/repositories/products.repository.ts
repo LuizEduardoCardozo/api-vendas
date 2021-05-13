@@ -1,4 +1,10 @@
-import { EntityRepository, getRepository, Repository } from 'typeorm';
+import {
+  EntityColumnNotFound,
+  EntityRepository,
+  FindManyOptions,
+  getRepository,
+  Repository,
+} from 'typeorm';
 
 import Product from '../entities/product';
 
@@ -24,5 +30,8 @@ export default class ProductRepository extends Repository<Product> {
         name,
       },
     });
+  }
+  public async getAll(): Promise<Product[]> {
+    return await this.productRepository.find({});
   }
 }

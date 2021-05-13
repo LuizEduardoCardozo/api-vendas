@@ -14,7 +14,8 @@ describe('product repository', () => {
     });
   });
   afterEach(async () => {
-    await getRepository(Product).delete('WHERE id==*');
+    const products = await getRepository(Product).find({});
+    await getRepository(Product).remove(products);
   });
   test('create a entry in database', async () => {
     const productRepository = new ProductRepository();
@@ -33,5 +34,27 @@ describe('product repository', () => {
     });
     const product = await productRepository.findByName('Carrinho-2');
     expect(product?.price).toBe(22.5);
+  });
+  test('try to find all products', async () => {
+    const productRepository = new ProductRepository();
+    await Promise.all([
+      productRepository.add({
+        name: 'product 1',
+        price: 22.5,
+        quantity: 15,
+      }),
+      productRepository.add({
+        name: 'product 2',
+        price: 22.5,
+        quantity: 15,
+      }),
+      productRepository.add({
+        name: 'product 3',
+        price: 22.5,
+        quantity: 15,
+      }),
+    ]);
+    const product = await productRepository.getAll();
+    expect(product).toHaveLength(3);
   });
 });
