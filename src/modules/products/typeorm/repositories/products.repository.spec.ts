@@ -75,4 +75,49 @@ describe('product repository', () => {
     expect(product?.updated_at).toBeUndefined();
     expect(product?.name).toBe('product 1');
   });
+  test('should update a product name', async () => {
+    const productRepository = new ProductRepository();
+    await productRepository.add({
+      name: 'product 1',
+      price: 22.5,
+      quantity: 15,
+    });
+    const addedProduct = await getRepository(Product).findOne({
+      where: {
+        name: 'product 1',
+      },
+    });
+    const productId = addedProduct?.id ?? '';
+    await productRepository.modify(productId, {
+      name: 'product 1 atualized',
+    });
+    const product = await getRepository(Product).findOne({
+      where: {
+        name: 'product 1 atualized',
+      },
+    });
+    const productLastName = await getRepository(Product).findOne({
+      where: {
+        name: 'product 1',
+      },
+    });
+    expect(productLastName).toBeUndefined();
+    expect(product?.id).toBe(productId);
+    expect(product?.name).toBe('product 1 atualized');
+    expect(product?.price).toBe(22.5);
+    expect(product?.quantity).toBe(15);
+  });
+  test('should throw an error if product was not found', async () => {
+    const productRepository = new ProductRepository();
+    let error = false;
+    try {
+      await productRepository.modify('this-id-didnt-exists', {
+        name: 'product 1 atualized',
+      });
+    } catch (e) {
+      error = true;
+      expect(e.statusCode).toBe(404);
+    }
+    expect(error).toBeTruthy();
+  });
 });

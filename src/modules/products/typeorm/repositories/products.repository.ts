@@ -1,4 +1,5 @@
 import { EntityRepository, getRepository, Repository } from 'typeorm';
+import AppError from '../../../../shared/errors/AppError';
 
 import Product from '../entities/product';
 
@@ -6,6 +7,16 @@ interface ProductAdd {
   name: string;
   price: number;
   quantity: number;
+}
+
+interface ProductUpdate {
+  name?: string;
+  price?: number;
+  quantity?: number;
+}
+
+interface SetQuery {
+  [key: string]: string;
 }
 
 @EntityRepository(Product)
@@ -42,5 +53,21 @@ export default class ProductRepository extends Repository<Product> {
       .select(['products.name', 'products.price', 'products.quantity'])
       .where('id == :id', { id })
       .getOne();
+  }
+  public async modify(
+    id: string,
+    { name, price, quantity }: ProductUpdate,
+  ): Promise<void> {
+    const productFound = await this.productRepository
+      .createQueryBuilder('products')
+      .where('id == :id', { id })
+      .getOne();
+    if (!productFound) {
+      throw new AppError('product not found', 404);
+    }
+    if (name) productFound.name = name;
+    if (price) productFound.price = price;
+    if (quantity) productFound.quantity = quantity;
+    await this.productRepository.save(productFound);
   }
 }
