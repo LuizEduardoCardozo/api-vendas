@@ -57,4 +57,22 @@ describe('product repository', () => {
     const product = await productRepository.getAll();
     expect(product).toHaveLength(3);
   });
+  test('try to find a product by their id', async () => {
+    const productRepository = new ProductRepository();
+    await productRepository.add({
+      name: 'product 1',
+      price: 22.5,
+      quantity: 15,
+    });
+    const addedProduct = await getRepository(Product).findOne({
+      where: {
+        name: 'product 1',
+      },
+    });
+    const product = await productRepository.getById(addedProduct?.id ?? '');
+    expect(product?.id).toBeUndefined();
+    expect(product?.created_at).toBeUndefined();
+    expect(product?.updated_at).toBeUndefined();
+    expect(product?.name).toBe('product 1');
+  });
 });

@@ -36,4 +36,11 @@ export default class ProductRepository extends Repository<Product> {
       ])
       .getMany();
   }
+  public async getById(id: string): Promise<Product | undefined> {
+    return await this.productRepository
+      .createQueryBuilder('products')
+      .select(['products.name', 'products.price', 'products.quantity'])
+      .where('id == :id', { id })
+      .getOne();
+  }
 }
