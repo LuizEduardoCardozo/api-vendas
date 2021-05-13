@@ -3,7 +3,7 @@
   "coverageProvider": "v8",
   "roots": ["<rootDir>"],
   "testEnvironment": "node",
-  "testMatch": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)"],
+  "testMatch": ["**/?(*.)+(spec|test).[tj]s?(x)"],
   "testPathIgnorePatterns": ["/node_modules/"],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
