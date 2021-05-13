@@ -62,4 +62,36 @@ describe('Create product controller', () => {
     await productsController.getAll(req, res);
     expect(res.status).toHaveBeenCalledWith(200);
   });
+  test('should return 200 if find a product', async () => {
+    const productRepository = new ProductRepository();
+    await productRepository.add({
+      name: 'product 1',
+      price: 22.5,
+      quantity: 15,
+    });
+    const foundProduct = await getRepository(Product).findOne({
+      where: {
+        name: 'product 1',
+      },
+    });
+    const foundProductId = foundProduct?.id ?? '';
+    const req = getMockReq({
+      params: {
+        id: foundProductId,
+      },
+    });
+    const { res } = getMockRes();
+    await productsController.getAll(req, res);
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+  test('should return 203 if doesnt find a product', async () => {
+    const req = getMockReq({
+      params: {
+        id: 'this-id-does-not-exists',
+      },
+    });
+    const { res } = getMockRes();
+    await productsController.details(req, res);
+    expect(res.status).toHaveBeenCalledWith(203);
+  });
 });
