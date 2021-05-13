@@ -1,0 +1,11 @@
+{
+  "coverageDirectory": "coverage",
+  "coverageProvider": "v8",
+  "roots": ["<rootDir>"],
+  "testEnvironment": "node",
+  "testMatch": ["**/?(*.)+(test-e2e).[tj]s?(x)"],
+  "testPathIgnorePatterns": ["/node_modules/"],
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  }
+}
