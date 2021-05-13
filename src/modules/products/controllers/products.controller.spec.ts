@@ -5,7 +5,7 @@ import ProductsController from './products.controller';
 import Product from '../typeorm/entities/product';
 import ProductRepository from '../typeorm/repositories/products.repository';
 
-describe('product controller', () => {
+describe('Create product controller', () => {
   const productsController = new ProductsController();
   beforeAll(() => {
     return createConnection({
@@ -17,7 +17,8 @@ describe('product controller', () => {
     });
   });
   afterEach(async () => {
-    await getRepository(Product).delete('WHERE id==*');
+    const products = await getRepository(Product).find({});
+    await getRepository(Product).remove(products);
   });
   test('create a new product', async () => {
     const req = getMockReq({
@@ -35,6 +36,30 @@ describe('product controller', () => {
     expect(product?.name).toBe('produto');
     expect(product?.price).toBe(22.5);
     expect(product?.quantity).toBe(15);
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
+  test('list all products', async () => {
+    const productRepository = new ProductRepository();
+    await Promise.all([
+      productRepository.add({
+        name: 'product 1',
+        price: 22.5,
+        quantity: 15,
+      }),
+      productRepository.add({
+        name: 'product 2',
+        price: 22.5,
+        quantity: 15,
+      }),
+      productRepository.add({
+        name: 'product 3',
+        price: 22.5,
+        quantity: 15,
+      }),
+    ]);
+    const req = getMockReq();
+    const { res } = getMockRes();
+    await productsController.getAll(req, res);
     expect(res.status).toHaveBeenCalledWith(200);
   });
 });
