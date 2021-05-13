@@ -13,6 +13,9 @@ describe('product repository', () => {
       synchronize: true,
     });
   });
+  afterEach(async () => {
+    await getRepository(Product).delete('WHERE id==*');
+  });
   test('create a entry in database', async () => {
     const productRepository = new ProductRepository();
     await productRepository.add({ name: 'Violao', price: 22.5, quantity: 15 });
