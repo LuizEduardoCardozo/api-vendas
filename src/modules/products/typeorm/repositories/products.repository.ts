@@ -15,10 +15,6 @@ interface ProductUpdate {
   quantity?: number;
 }
 
-interface SetQuery {
-  [key: string]: string;
-}
-
 @EntityRepository(Product)
 export default class ProductRepository extends Repository<Product> {
   private productRepository = getRepository(Product);
