@@ -1,4 +1,4 @@
-import { createConnection } from 'typeorm';
+import { createConnection, getRepository } from 'typeorm';
 import AppError from '../../../shared/errors/AppError';
 
 import CreateProductService from '../services/CreateProduct.service';
@@ -15,17 +15,20 @@ describe('CreateProductService', () => {
       synchronize: true,
     });
   });
+  afterEach(async () => {
+    await getRepository(Product).delete('WHERE id==*');
+  });
   test('creates a new product', async () => {
     const createProductService = new CreateProductService();
     const productRepository = new ProductRepository();
     await createProductService.execute({
-      name: 'Boneca-2',
+      name: 'Boneca',
       price: 22.5,
       quantity: 15,
     });
-    const product = await productRepository.findByName('Boneca-2');
+    const product = await productRepository.findByName('Boneca');
     expect(product?.id).toBeTruthy();
-    expect(product?.name).toBe('Boneca-2');
+    expect(product?.name).toBe('Boneca');
     expect(product?.price).toBe(22.5);
     expect(product?.quantity).toBe(15);
   });
@@ -34,7 +37,12 @@ describe('CreateProductService', () => {
     const createProductService = new CreateProductService();
     try {
       await createProductService.execute({
-        name: 'Boneca-2',
+        name: 'Boneca',
+        price: 22.5,
+        quantity: 15,
+      });
+      await createProductService.execute({
+        name: 'Boneca',
         price: 22.5,
         quantity: 15,
       });
