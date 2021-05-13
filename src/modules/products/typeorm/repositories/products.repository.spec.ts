@@ -15,20 +15,20 @@ describe('product repository', () => {
   });
   test('create a entry in database', async () => {
     const productRepository = new ProductRepository();
-    await productRepository.add({ name: 'Boneca', price: 22.5, quantity: 15 });
+    await productRepository.add({ name: 'Violao', price: 22.5, quantity: 15 });
     const product = await getRepository(Product).findOne({
-      where: { name: 'Boneca' },
+      where: { name: 'Violao' },
     });
     expect(product?.price).toBe(22.5);
   });
   test('try to find a entry in database by name', async () => {
     const productRepository = new ProductRepository();
     await productRepository.add({
-      name: 'Carrinho',
+      name: 'Carrinho-2',
       price: 22.5,
       quantity: 15,
     });
-    const product = await productRepository.findByName('Carrinho');
+    const product = await productRepository.findByName('Carrinho-2');
     expect(product?.price).toBe(22.5);
   });
 });
