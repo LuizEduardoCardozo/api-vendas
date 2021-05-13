@@ -26,6 +26,14 @@ export default class ProductRepository extends Repository<Product> {
     });
   }
   public async getAll(): Promise<Product[]> {
-    return await this.productRepository.find({});
+    return await this.productRepository
+      .createQueryBuilder('products')
+      .select([
+        'products.id',
+        'products.name',
+        'products.price',
+        'products.quantity',
+      ])
+      .getMany();
   }
 }
