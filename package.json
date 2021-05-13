@@ -11,6 +11,7 @@
     "start:dev": "tsnd --inspect --transpile-only --ignore-watch node_modules src/shared/index.ts",
     "lint": "eslint . --ext .ts",
     "test": "jest",
+    "test:e2e": "jest -c ./e2e-jest.config.json",
     "typeorm": "ts-node node_modules/typeorm/cli"
   },
   "dependencies": {
