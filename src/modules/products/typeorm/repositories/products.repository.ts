@@ -1,10 +1,4 @@
-import {
-  EntityRepository,
-  FindConditions,
-  getRepository,
-  In,
-  Repository,
-} from 'typeorm';
+import { EntityRepository, getRepository, In, Repository } from 'typeorm';
 import AppError from '../../../../shared/errors/AppError';
 
 import Product from '../entities/product';
