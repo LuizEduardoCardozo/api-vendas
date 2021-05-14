@@ -183,4 +183,90 @@ describe('product repository', () => {
     const products = await productRepository.getAll();
     expect(products).toHaveLength(1);
   });
+  test('should return true if a product exists', async () => {
+    const productRepository = new ProductRepository();
+    await Promise.all([
+      productRepository.add({
+        name: 'product 1',
+        price: 22.5,
+        quantity: 15,
+      }),
+      productRepository.add({
+        name: 'product 2',
+        price: 22.5,
+        quantity: 15,
+      }),
+      productRepository.add({
+        name: 'product 3',
+        price: 22.5,
+        quantity: 15,
+      }),
+    ]);
+    const foundProduct = await getRepository(Product).findOne({
+      where: {
+        name: 'product 1',
+      },
+    });
+    const productId = foundProduct?.id ?? '';
+    const exists = await productRepository.exists(productId);
+    expect(exists).toBeTruthy();
+  });
+  test('should return false if a product not exists', async () => {
+    const productRepository = new ProductRepository();
+    const productId = 'this-id-does-not-exists';
+    const exists = await productRepository.exists(productId);
+    expect(exists).not.toBeTruthy();
+  });
+  test('should return true if all products exists', async () => {
+    const productRepository = new ProductRepository();
+    await Promise.all([
+      productRepository.add({
+        name: 'product 1',
+        price: 22.5,
+        quantity: 15,
+      }),
+      productRepository.add({
+        name: 'product 2',
+        price: 22.5,
+        quantity: 15,
+      }),
+      productRepository.add({
+        name: 'product 3',
+        price: 22.5,
+        quantity: 15,
+      }),
+    ]);
+    const foundProduct = await getRepository(Product).find({
+      where: [
+        {
+          name: 'product 1',
+        },
+        {
+          name: 'product 2',
+        },
+      ],
+    });
+    const productsIds = foundProduct.map(product => product.id);
+    const exists = await productRepository.exists(productsIds);
+    expect(exists).toBeTruthy();
+  });
+  test('should return false if a product not exists', async () => {
+    const productRepository = new ProductRepository();
+    await productRepository.add({
+      name: 'product 1',
+      price: 22.5,
+      quantity: 15,
+    });
+    const foundProduct = await getRepository(Product).findOne({
+      where: {
+        name: 'product 1',
+      },
+    });
+    const productId = foundProduct?.id ?? '';
+    const exists = await productRepository.exists([
+      productId,
+      'this-id-does-not-exist',
+    ]);
+    expect(exists).not.toBeTruthy();
+  });
 });

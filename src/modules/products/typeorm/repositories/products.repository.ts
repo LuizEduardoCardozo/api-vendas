@@ -71,4 +71,16 @@ export default class ProductRepository extends Repository<Product> {
       id: typeof id === 'object' ? In(id) : id,
     });
   }
+  public async exists(id: string[] | string): Promise<boolean> {
+    if (id.length === 0) return false;
+    const foundProducts = await this.productRepository.find({
+      where: {
+        id: typeof id === 'string' ? id : In(id),
+      },
+    });
+    if (typeof id === 'string') {
+      return foundProducts.length == 1;
+    }
+    return foundProducts.length === id.length;
+  }
 }
