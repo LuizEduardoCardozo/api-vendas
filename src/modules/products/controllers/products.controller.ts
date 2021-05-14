@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import CreateProductService from '../services/CreateProduct.service';
+import DeleteProductService from '../services/DeleteProduct.service';
 import ListProductsService from '../services/ListProducts.service';
 import ShowProductService from '../services/ShowProduct.service';
 import UpdateProductService from '../services/UpdateProduct.service';
@@ -27,8 +28,8 @@ export default class ProductsController {
     res.status(productDetails?.id ? 200 : 203).send(productDetails);
   }
   public async update(req: Request, res: Response): Promise<void> {
-    const productDetailsService = new UpdateProductService();
-    await productDetailsService.execute(req.params.id, req.body);
+    const updateProductService = new UpdateProductService();
+    await updateProductService.execute(req.params.id, req.body);
     res.status(200).send();
   }
 }
