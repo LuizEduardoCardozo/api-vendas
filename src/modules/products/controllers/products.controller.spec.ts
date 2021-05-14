@@ -4,6 +4,7 @@ import { createConnection, getRepository } from 'typeorm';
 import ProductsController from './products.controller';
 import Product from '../typeorm/entities/product';
 import ProductRepository from '../typeorm/repositories/products.repository';
+import CreateProductService from '../services/CreateProduct.service';
 
 describe('Create product controller', () => {
   const productsController = new ProductsController();
@@ -93,5 +94,30 @@ describe('Create product controller', () => {
     const { res } = getMockRes();
     await productsController.details(req, res);
     expect(res.status).toHaveBeenCalledWith(203);
+  });
+  test('should return 200 if update sucessfully', async () => {
+    const createProductService = new CreateProductService();
+    await createProductService.execute({
+      name: 'Boneca',
+      price: 22.5,
+      quantity: 15,
+    });
+    const product = await getRepository(Product).findOne({
+      where: {
+        name: 'Boneca',
+      },
+    });
+    const productId = product?.id ?? '';
+    const req = getMockReq({
+      params: {
+        id: productId,
+      },
+      body: {
+        name: 'Boneca atualizada',
+      },
+    });
+    const { res } = getMockRes();
+    await productsController.update(req, res);
+    expect(res.status).toHaveBeenCalledWith(200);
   });
 });
