@@ -47,7 +47,7 @@ export default class ProductRepository extends Repository<Product> {
     return await this.productRepository
       .createQueryBuilder('products')
       .select(['products.name', 'products.price', 'products.quantity'])
-      .where('id == :id', { id })
+      .where('id = :id', { id })
       .getOne();
   }
   public async modify(
