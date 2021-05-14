@@ -120,4 +120,67 @@ describe('product repository', () => {
     }
     expect(error).toBeTruthy();
   });
+  test('should remove a product', async () => {
+    const productRepository = new ProductRepository();
+    await Promise.all([
+      productRepository.add({
+        name: 'product 1',
+        price: 22.5,
+        quantity: 15,
+      }),
+      productRepository.add({
+        name: 'product 2',
+        price: 22.5,
+        quantity: 15,
+      }),
+      productRepository.add({
+        name: 'product 3',
+        price: 22.5,
+        quantity: 15,
+      }),
+    ]);
+    const foundProduct = await getRepository(Product).findOne({
+      where: {
+        name: 'product 1',
+      },
+    });
+    const productId = foundProduct?.id ?? '';
+    await productRepository.removeOneOrMany(productId);
+    const products = await productRepository.getAll();
+    expect(products).toHaveLength(2);
+  });
+  test('should remove many products', async () => {
+    const productRepository = new ProductRepository();
+    await Promise.all([
+      productRepository.add({
+        name: 'product 1',
+        price: 22.5,
+        quantity: 15,
+      }),
+      productRepository.add({
+        name: 'product 2',
+        price: 22.5,
+        quantity: 15,
+      }),
+      productRepository.add({
+        name: 'product 3',
+        price: 22.5,
+        quantity: 15,
+      }),
+    ]);
+    const foundProducts = await getRepository(Product).find({
+      where: [
+        {
+          name: 'product 1',
+        },
+        {
+          name: 'product 2',
+        },
+      ],
+    });
+    const productsIds = foundProducts.map(product => product.id);
+    await productRepository.removeOneOrMany(productsIds);
+    const products = await productRepository.getAll();
+    expect(products).toHaveLength(1);
+  });
 });

@@ -1,4 +1,10 @@
-import { EntityRepository, getRepository, Repository } from 'typeorm';
+import {
+  EntityRepository,
+  FindConditions,
+  getRepository,
+  In,
+  Repository,
+} from 'typeorm';
 import AppError from '../../../../shared/errors/AppError';
 
 import Product from '../entities/product';
@@ -65,5 +71,10 @@ export default class ProductRepository extends Repository<Product> {
     if (price) productFound.price = price;
     if (quantity) productFound.quantity = quantity;
     await this.productRepository.save(productFound);
+  }
+  public async removeOneOrMany(id: string | string[]): Promise<void> {
+    await this.productRepository.delete({
+      id: typeof id === 'object' ? In(id) : id,
+    });
   }
 }
