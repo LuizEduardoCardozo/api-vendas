@@ -120,4 +120,26 @@ describe('Create product controller', () => {
     await productsController.update(req, res);
     expect(res.status).toHaveBeenCalledWith(200);
   });
+  test('should return 200 if delete sucessfully', async () => {
+    const createProductService = new CreateProductService();
+    await createProductService.execute({
+      name: 'Carrinho',
+      price: 22.5,
+      quantity: 15,
+    });
+    const product = await getRepository(Product).findOne({
+      where: {
+        name: 'Carrinho',
+      },
+    });
+    const productId = product?.id ?? '';
+    const req = getMockReq({
+      params: {
+        id: productId,
+      },
+    });
+    const { res } = getMockRes();
+    await productsController.delete(req, res);
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
 });

@@ -32,4 +32,9 @@ export default class ProductsController {
     await updateProductService.execute(req.params.id, req.body);
     res.status(200).send();
   }
+  public async delete(req: Request, res: Response): Promise<void> {
+    const deleteProductService = new DeleteProductService();
+    await deleteProductService.execute(req.params.id);
+    res.status(200).send();
+  }
 }
