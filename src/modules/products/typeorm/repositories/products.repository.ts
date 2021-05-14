@@ -56,7 +56,7 @@ export default class ProductRepository extends Repository<Product> {
   ): Promise<void> {
     const productFound = await this.productRepository
       .createQueryBuilder('products')
-      .where('id == :id', { id })
+      .where('id = :id', { id })
       .getOne();
     if (!productFound) {
       throw new AppError('product not found', 404);
