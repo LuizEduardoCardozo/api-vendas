@@ -25,7 +25,7 @@ export default class ProductsController {
   public async details(req: Request, res: Response): Promise<void> {
     const productDetailsService = new ShowProductService();
     const productDetails = await productDetailsService.execute(req.params.id);
-    res.status(productDetails?.id ? 200 : 203).send(productDetails);
+    res.status(productDetails?.name ? 200 : 203).send(productDetails);
   }
   public async update(req: Request, res: Response): Promise<void> {
     const updateProductService = new UpdateProductService();
