@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import AppError from '../errors/AppError';
+import BadRequestError from '../errors/BadRequest';
 
 export default (
   err: Error,
@@ -7,7 +8,11 @@ export default (
   res: Response,
   nxt: NextFunction,
 ): void => {
-  if (err instanceof AppError) {
+  if (err instanceof BadRequestError) {
+    res.status(err.getStatusCode()).send({
+      errors: err.getMessage(),
+    });
+  } else if (err instanceof AppError) {
     res.status(err.getStatusCode()).send({
       errors: [
         {
@@ -24,6 +29,5 @@ export default (
       ],
     });
   }
-
   nxt();
 };
