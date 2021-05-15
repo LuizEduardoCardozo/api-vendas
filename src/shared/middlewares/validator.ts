@@ -3,7 +3,7 @@ import { validate } from 'class-validator';
 
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import DTO from '../dtos/baseDto';
-import AppError from '../errors/AppError';
+import BadRequestError from '../errors/BadRequest';
 
 export default function validator(
   classDto: ClassConstructor<DTO>,
@@ -14,7 +14,7 @@ export default function validator(
     if (errors.length === 0) {
       nxt();
     } else {
-      nxt(new AppError('bad request', 400));
+      nxt(new BadRequestError(errors));
     }
   };
 }
